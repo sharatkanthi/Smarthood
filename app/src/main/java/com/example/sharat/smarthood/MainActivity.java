@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
         actionBar.hide();
         //////////////////////////////////End of Hiding the action bar/////////////////////////////////////////////
 
-        WebView wv = (WebView)findViewById(R.id.webView);   //Innitilizing Webview
+        final WebView wv = (WebView)findViewById(R.id.webView);   //Innitilizing Webview
         WebSettings webSettings = wv.getSettings();         //Enabling Javascripts
         wv.getSettings().setJavaScriptEnabled(true);        //Enabling Javascripts
 
@@ -39,11 +39,9 @@ public class MainActivity extends ActionBarActivity {
         final ProgressBar pb = (ProgressBar)findViewById(R.id.progressBar);
         splashicon.setImageResource(R.mipmap.sh);
 
-        wv.setWebChromeClient(new WebChromeClient()
-        {
-            public void onProgressChanged(WebView view, int newProgress)
-            {
-                tv.setText("%" + newProgress);
+        wv.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int newProgress) {
+                tv.setText("" + newProgress + "%");
                 if (newProgress == 100) {
                     splash.setVisibility(View.GONE);
                     splashicon.setVisibility(View.GONE);
@@ -53,7 +51,15 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        wv.loadUrl("http://www.google.com");
+        wv.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                //True if the host application wants to leave the current WebView and handle the url itself, otherwise return false.
+                wv.loadUrl("http://www.smarthood.in");
+                return true;
+            }
+        });
+
+        wv.loadUrl("http://www.smarthood.in");
 
     }
 
